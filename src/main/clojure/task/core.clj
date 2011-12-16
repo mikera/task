@@ -75,7 +75,7 @@
    options selected." 
  
   ([{repeat :repeat 
-     sleep :sleep 
+     sleep-millis :sleep 
      accumulate :accumulate-results 
      repeat-value :repeat
      while-clause :while 
@@ -103,9 +103,9 @@
  	    ((wrap-if (not repeat-value) 
 					      `(let [result# ~code]
 					         (assoc result# :status :complete))))
-	    ((wrap-if sleep 
+	    ((wrap-if sleep-millis 
 	              `(let [result# ~code] 
-	                 (if (not (complete? ~'task)) (Thread/sleep ~sleep)) 
+	                 (if (not (complete? ~'task)) (do (Thread/sleep ~sleep-millis) result#)) 
 	                 result#)))
 	    ((wrap-if true 
 	              `(fn [~'task] ~code)))))
@@ -176,6 +176,15 @@
   (let [task (get-task task)]
     @(:promise task)))
 
+(defn clear 
+  ([]
+    (dosync
+      (ref-set tasks {})))
+  ([task]
+	  (let [task (get-task task)
+	        id (:id task)]
+	    (dosync 
+	      (alter tasks dissoc id)))))
 
 ;; ==================================================================================
 ;; Task execution
@@ -192,7 +201,7 @@
     (let [id (:id task)
           task (try 
                  ((:function task) task) 
-                 (catch Throwable t (assoc task :status :error :error t)))
+                 (catch Throwable t (assoc task :status :error :error t :result t)))
           new-status (if (stopped? (get-task id)) :stopped (:status task))
           task (assoc task :status new-status)]
 	    (dosync (alter tasks assoc id task))
