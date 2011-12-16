@@ -1,0 +1,16 @@
+Task is a Clojure library for managing interactive, long-running tasks at the REPL.
+
+
+
+Example: Use task by importing it into your namespace:
+
+(ns your.name.space
+  (:use [task.core]))
+
+
+Example: Running a simple task 5 times over 5 seconds
+
+(run {:repeat 5 :pause 1000} (println "Hello task!"))
+
+
+
