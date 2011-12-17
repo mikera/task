@@ -31,6 +31,19 @@
 				<directory>src/test/clojure</directory>
 			</testResource>
 		</testResources>
+		
+		<extensions>
+	      <extension>
+	        <groupId>org.apache.maven.wagon</groupId>
+	         <artifactId>wagon-ssh</artifactId>
+	         <version>2.1</version>
+	      </extension>
+	      <extension>
+	        <groupId>org.apache.maven.wagon</groupId>
+	         <artifactId>wagon-ssh-external</artifactId>
+	         <version>2.1</version>
+	      </extension>
+	    </extensions>
 	</build>
 
 	<dependencies>
@@ -50,4 +63,12 @@
 			<version>0.1.1</version>
 		</dependency>
 	</dependencies>
+	
+	<distributionManagement>
+	    <repository>
+	      <id>clojars</id>
+	      <name>Clojars.org Repository</name>
+	      <url>scpexe://clojars.org/</url>
+	    </repository>
+  	</distributionManagement>
 </project>
