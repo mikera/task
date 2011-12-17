@@ -33,3 +33,12 @@
                             :repeat 10
                             :while (< (:result task) 15)} 
                            (inc (:result task))))))))
+
+(deftest test-accumulate
+  (testing "Result accumulation"
+    (is (= [1 2 3 4 5] 
+           (await-results (run 
+                           {:accumulate-results true
+                            :result 0 
+                            :repeat 5} 
+                           (inc (:result task))))))))

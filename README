@@ -5,7 +5,7 @@ Task is a Clojure library for managing long-running tasks at the REPL. It was cr
 because of the author's frustration with the lack of good ways to handle Java threads
 while doing computational experiments in Clojure.
 
-It can be use programatically, but is intended primarily for interactive REPL usgae.
+It can be use programatically, but is intended primarily for interactive REPL usage.
 
 
 
@@ -14,7 +14,6 @@ Setup: Use Task by importing it into your namespace:
 
 (ns your.name.space
   (:use [task.core]))
-
 
 
 

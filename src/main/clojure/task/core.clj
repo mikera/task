@@ -84,7 +84,7 @@
 	  (-> `(assoc ~'task :result ~original-code)
 	    ((wrap-if accumulate 
 	              `(let [result# ~code]
-	                 (update-in result# :results conj (:result result#)))))
+	                 (assoc result# :results (conj (or (:results result#) []) (:result result#))))))
 	    ((wrap-if while-clause 
 	              `(if ~while-clause 
 	                 ~code 
@@ -175,6 +175,16 @@
 (defn await-result [task]
   (let [task (get-task task)]
     @(:promise task)))
+
+(defn await-task [task]
+  (let [task (get-task task)]
+    @(:promise task)
+    (get-task task)))
+
+(defn await-results [task]
+  (let [task (get-task task)]
+    @(:promise task)
+    (:results (get-task task))))
 
 (defn clear 
   ([]
