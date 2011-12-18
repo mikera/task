@@ -33,7 +33,6 @@
                             :repeat 10
                             :while (< (:result task) 15)} 
                            (inc (:result task))))))))
-
 (deftest test-accumulate
   (testing "Result accumulation"
     (is (= [1 2 3 4 5] 

@@ -83,32 +83,33 @@
      :as options} original-code]
 	  (-> `(assoc ~'task :result ~original-code)
 	    ((wrap-if accumulate 
-	              `(let [result# ~code]
-	                 (assoc result# :results (conj (or (:results result#) []) (:result result#))))))
+	              `(let [task# ~code]
+	                 (assoc task# :results (conj (or (:results task#) []) (:result task#))))))
 	    ((wrap-if while-clause 
 	              `(if ~while-clause 
 	                 ~code 
 	                 (assoc ~'task :status :complete))))
 	    ((wrap-if until-clause 
-	              `(let [result# ~code]
+	              `(let [task# ~code]
                    (if ~until-clause 
-	                   result# 
-	                   (assoc result# :status :complete)))))
+	                   task# 
+	                   (assoc task# :status :complete)))))
  	    ((wrap-if (number? repeat-value) 
-		            `(let [result# ~code
-		                   rep# (dec (:repeat result#))]
+		            `(let [task# ~code
+		                   rep# (dec (:repeat task#))]
 		               (if (> rep# 0)
-		                 (assoc result# :repeat rep#)
-		                 (assoc result# :status :complete :repeat 0)))))
+		                 (assoc task# :repeat rep#)
+		                 (assoc task# :status :complete :repeat 0)))))
  	    ((wrap-if (not repeat-value) 
-					      `(let [result# ~code]
-					         (assoc result# :status :complete))))
+					      `(let [task# ~code]
+					         (assoc task# :status :complete))))
 	    ((wrap-if sleep-millis 
-	              `(let [result# ~code] 
-	                 (if (not (complete? ~'task)) (do (Thread/sleep ~sleep-millis) result#)) 
-	                 result#)))
+	              `(let [task# ~code] 
+	                 (if (not (complete? ~'task)) (do (Thread/sleep ~sleep-millis) task#)) 
+	                 task#)))
 	    ((wrap-if true 
-	              `(fn [~'task] ~code)))))
+	              `(fn [~'task] 
+                   ~code)))))
   
   ([code] (build-task-function nil code)))
 
@@ -167,10 +168,10 @@
     (clojure.pprint/print-table ks (map task-summary tasks))))
 
 (defn stop [task]
-  (let [task (get-task task)
-        id (:id task)]
     (dosync 
-      (alter tasks assoc id (assoc task :status :stopped)))))
+		  (let [task (get-task task)
+		        id (:id task)]
+		      (alter tasks assoc id (assoc task :status :stopped)))))
 
 (defn await-result [task]
   (let [task (get-task task)]
