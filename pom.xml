@@ -26,6 +26,8 @@
 			</plugin>
 		</plugins>
 
+		<sourceDirectory>src/main/clojure</sourceDirectory>
+
 		<testResources>
 			<testResource>
 				<directory>src/test/clojure</directory>
