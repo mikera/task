@@ -85,15 +85,15 @@
 	    ((wrap-if accumulate 
 	              `(let [task# ~code]
 	                 (assoc task# :results (conj (or (:results task#) []) (:result task#))))))
+	    ((wrap-if until-clause 
+	              `(let [~'task ~code]  ;; need to let task so that until-clause sees this value
+                   (if ~until-clause 
+	                   (assoc ~'task :status :complete)
+                     ~'task))))
 	    ((wrap-if while-clause 
 	              `(if ~while-clause 
 	                 ~code 
 	                 (assoc ~'task :status :complete))))
-	    ((wrap-if until-clause 
-	              `(let [task# ~code]
-                   (if ~until-clause 
-	                   task# 
-	                   (assoc task# :status :complete)))))
  	    ((wrap-if (number? repeat-value) 
 		            `(let [task# ~code
 		                   rep# (dec (:repeat task#))]

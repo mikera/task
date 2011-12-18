@@ -27,12 +27,35 @@
                             :repeat 100
                             :while (< (:result task) 15)} 
                            (inc (:result task))))))
+    (is (= 0 
+           (await-result (run 
+                           {:result 0 
+                            :repeat 100
+                            :while (< (:result task) 0)} 
+                           (inc (:result task))))))
     (is (= 10 
            (await-result (run 
                            {:result 0 
                             :repeat 10
                             :while (< (:result task) 15)} 
                            (inc (:result task))))))))
+
+
+(deftest test-until
+  (testing "Task results"
+    (is (= 11 
+           (await-result (run 
+                           {:result 0 
+                            :repeat 100
+                            :until (> (:result task) 10)} 
+                           (inc (:result task))))))
+    (is (= 1 
+           (await-result (run 
+                           {:result 0 
+                            :repeat 10
+                            :until (>= (:result task) 0)} 
+                           (inc (:result task))))))))
+
 (deftest test-accumulate
   (testing "Result accumulation"
     (is (= [1 2 3 4 5] 
