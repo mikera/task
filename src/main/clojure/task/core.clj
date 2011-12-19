@@ -177,6 +177,10 @@
   (let [task (get-task task)]
     @(:promise task)))
 
+(defn result [task]
+  (let [task (get-task task)]
+    (:result task)))
+
 (defn await-task [task]
   (let [task (get-task task)]
     @(:promise task)
