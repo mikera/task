@@ -11,6 +11,10 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -42,19 +46,15 @@
 				<directory>src/test/clojure</directory>
 			</testResource>
 		</testResources>
-		
+
 		<extensions>
-	      <extension>
-	        <groupId>org.apache.maven.wagon</groupId>
-	         <artifactId>wagon-ssh</artifactId>
-	         <version>2.1</version>
-	      </extension>
-	      <extension>
-	        <groupId>org.apache.maven.wagon</groupId>
-	         <artifactId>wagon-ssh-external</artifactId>
-	         <version>2.1</version>
-	      </extension>
-	    </extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<!-- Alternative: use wagon-ssh for internal ssh implementation -->
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>2.2</version>
+			</extension>
+		</extensions>
 	</build>
 
 	<dependencies>
@@ -74,12 +74,12 @@
 			<version>0.1.1</version>
 		</dependency>
 	</dependencies>
-	
+
 	<distributionManagement>
-	    <repository>
-	      <id>clojars</id>
-	      <name>Clojars.org Repository</name>
-	      <url>scpexe://clojars.org/</url>
-	    </repository>
-  	</distributionManagement>
+		<repository>
+			<id>clojars</id>
+			<name>Clojars.org Repository</name>
+			<url>scpexe://clojars.org/repo</url>
+		</repository>
+	</distributionManagement>
 </project>
