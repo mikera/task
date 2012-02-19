@@ -173,6 +173,11 @@
 		        id (:id task)]
 		      (alter tasks assoc id (assoc task :status :stopped)))))
 
+(defn stop-all 
+  ([]
+    (doseq [[id task] @tasks]
+      (stop task))))
+
 (defn await-result [task]
   (let [task (get-task task)]
     @(:promise task)))
@@ -222,6 +227,11 @@
 	    (dosync (alter tasks assoc id task))
       (recur (@tasks id)))))
 	      
+(defn elapsed-time-secs [task]
+  (if-let [task (get-task task)]
+    (let [start-time (:start-time task)
+          time-now (time/now)]
+      (* 0.001 (.toDurationMillis (time/interval start-time (time/now)))))))
 
 (defn run-task [task]
   (let [id (allocate-task-id)
