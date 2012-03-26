@@ -1,6 +1,7 @@
 (ns task.core
   (:require [clj-time.core :as time])
-  (:require [clojure.pprint]))
+  (:require [clojure.pprint])
+  (:require [clojure.repl]))
 
 ;; ====================================================================================
 ;; Task data structure
@@ -221,7 +222,9 @@
     (let [id (:id task)
           task (try 
                  ((:function task) task) 
-                 (catch Throwable t (assoc task :status :error :error t :result t)))
+                 (catch Throwable t 
+                   (clojure.repl/pst t)
+                   (assoc task :status :error :error t :result t)))
           new-status (if (stopped? (get-task id)) :stopped (:status task))
           task (assoc task :status new-status)]
 	    (dosync (alter tasks assoc id task))
