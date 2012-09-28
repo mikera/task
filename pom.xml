@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>clj-time</groupId>
 			<artifactId>clj-time</artifactId>
-			<version>0.4.3</version>
+			<version>0.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clojure</groupId>
