@@ -3,6 +3,7 @@
 	<artifactId>task</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>Task</name>
+	<packaging>jar</packaging>
 	<description>Clojure library for running and managing interactive tasks</description>
 
 	<parent>
