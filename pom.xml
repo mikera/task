@@ -1,85 +1,43 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.mikera</groupId>
 	<artifactId>task</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>Task</name>
+	<packaging>jar</packaging>
 	<description>Clojure library for running and managing interactive tasks</description>
 
+	<parent>
+		<groupId>net.mikera</groupId>
+		<artifactId>clojure-pom</artifactId>
+		<version>0.0.3</version>
+	</parent>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.theoryinpractise</groupId>
-				<artifactId>clojure-maven-plugin</artifactId>
-				<version>1.3.8</version>
+	<scm>
+		<connection>scm:git:git@github.com:mikera/${project.artifactId}.git</connection>
+		<url>scm:git:git@github.com:mikera/${project.artifactId}.git</url>
+		<developerConnection>scm:git:git@github.com:mikera/${project.artifactId}.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
-				<executions>
-					<execution>
-						<id>test-clojure</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-
-		<sourceDirectory>src/main/clojure</sourceDirectory>
-
-		<testResources>
-			<testResource>
-				<directory>src/test/clojure</directory>
-			</testResource>
-		</testResources>
-
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<!-- Alternative: use wagon-ssh for internal ssh implementation -->
-				<artifactId>wagon-ssh-external</artifactId>
-				<version>2.2</version>
-			</extension>
-		</extensions>
-	</build>
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<name>Clojars repository</name>
+			<url>https://clojars.org/repo</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>clj-time</groupId>
 			<artifactId>clj-time</artifactId>
-			<version>0.4.3</version>
+			<version>0.4.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clojure</groupId>
 			<artifactId>tools.macro</artifactId>
 			<version>0.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.clojure</groupId>
-			<artifactId>clojure</artifactId>
-			<version>1.4.0</version>
-		</dependency>
 	</dependencies>
-
-	<distributionManagement>
-		<repository>
-			<id>clojars</id>
-			<name>Clojars.org Repository</name>
-			<url>scpexe://clojars.org/repo</url>
-		</repository>
-	</distributionManagement>
 </project>
