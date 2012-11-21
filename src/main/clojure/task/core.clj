@@ -8,12 +8,14 @@
 
 (defrecord TaskData [])
 
-(defn task* [options function]
-  (TaskData. nil 
-    (merge options
-           {:function function
-            :promise (promise)
-            :creation-time (time/now)})))
+(defn task* 
+  "Creates a map representing the specified function as a task"
+  ([options function]
+	  (TaskData. nil 
+	    (merge options
+	           {:function function
+	            :promise (promise)
+	            :creation-time (time/now)}))))
 
 
 ;; =======================================================================================
@@ -198,6 +200,7 @@
     (:results (get-task task))))
 
 (defn clear 
+  "Clears all currently runnig tasks"
   ([]
     (dosync
       (ref-set tasks {})))
