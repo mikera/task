@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>net.mikera</groupId>
 		<artifactId>clojure-pom</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</parent>
 
 	<scm>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>net.mikera</groupId>
 			<artifactId>cljunit</artifactId>
-			<version>0.1.5</version>
+			<version>0.2.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
