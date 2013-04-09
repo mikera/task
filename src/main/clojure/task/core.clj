@@ -10,7 +10,7 @@
 (defrecord TaskData [])
 
 (defn task* 
-  "Creates a map representing the specified function as a task"
+  "Creates a task data structure representing the specified function as a task"
   ([options function]
 	  (TaskData. nil 
 	    (merge options
@@ -150,7 +150,7 @@
      If set to true, all results will be saved in the vector :results in the task.
 
   :timeout
-     A number of milliseconds to run the task for. If the tomeout is reaced during
+     A number of milliseconds to run the task for. If the timeout is reached during
      execution of the task, it will be allowed to complete.
 
   :sleep
@@ -235,11 +235,13 @@
 ;; ==================================================================================
 ;; Task execution
 
-(defn finish-task [task]
-  (let [task (assoc task :finish-time (time/now))
-        promise (:promise task)]
-    (if promise (deliver promise (:result task)))
-    task))
+(defn- finish-task 
+  ([task]
+    (let [task (get-task task)
+          task (assoc task :finish-time (time/now))
+          promise (:promise task)]
+      (if promise (deliver promise (:result task)))
+      task)))
 
 (defn task-loop [task] 
   (if (complete? task) 
