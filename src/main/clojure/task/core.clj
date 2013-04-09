@@ -1,5 +1,6 @@
 (ns task.core
   (:require [clj-time.core :as time])
+  (:require [mikera.cljutils.text :as text])
   (:require [clojure.pprint])
   (:require [clojure.repl]))
 
@@ -31,18 +32,6 @@
 ;; =====================================================================================
 ;; Task query functions
 
-(defn stopped? [task]
-  (or
-    (nil? task)
-    (#{:stopped} (:status task))))
-
-
-(defn complete? [task]
-  (or
-    (nil? task)
-    (#{:complete :error :stopped} (:status task))))
-
-
 (defn get-task 
   "Returns the current task associated with the given ID.
 
@@ -54,14 +43,44 @@
         task (@tasks id)]
     task)) 
 
+(defn stopped? [task]
+  (let [task (get-task task)]
+    (or
+      (nil? task)
+      (#{:stopped} (:status task)))))
+
+
+(defn complete? [task]
+  (let [task (get-task task)]
+    (or
+      (nil? task)
+      (#{:complete :error :stopped} (:status task)))))
+
+(defn running? [task]
+  (let [task (get-task task)]
+    (and task
+       (#{:started} (:status task)))))
+
+
+(def task-fields 
+  {:id {:length 6}
+   :status {:length 10}
+   :source {:length 20}
+   :options {:length 20}
+   :result {:length 15}})
+
 (def task-summary-fields [:id :status :source :options :result])
 
-(defn task-summary [task]
-  {:id (:id task)
-    :status (:status task)
-    :source (:source task)
-    :options (:options task)
-    :result (:result task)})
+(defn task-summary [task & {:keys [fields]
+                            :or {fields task-summary-fields}}]
+  (reduce 
+    (fn [m k]
+      (assoc m k 
+             (let [len (:length (task-fields k))
+                   s (str (k task))]
+               (text/pad-right (text/truncate-dotted s len) len))))
+    {}
+    fields))
 
 
 ;; =====================================================================================
@@ -163,12 +182,15 @@
 
 
 (defn ps 
-  ([]
-    (ps (vals @tasks)))
-  ([tasks]
-    (ps task-summary-fields tasks))
-  ([ks tasks]
-    (clojure.pprint/print-table ks (map task-summary tasks))))
+  "Prints a table of tasks"
+  ([& {:keys [filter fields tasks sort]
+       :or {fields task-summary-fields
+            filter (constantly true)
+            sort :id
+            tasks (vals @tasks)}}]
+    (let [tasks (clojure.core/filter filter tasks)
+          tasks (if sort (sort-by sort tasks) tasks)]
+      (clojure.pprint/print-table fields (map task-summary tasks)))))
 
 (defn stop [task]
     (dosync 
@@ -260,6 +282,9 @@
 	 `(run-task (task ~code)))
   
   ([options code]
-	 `(run-task (task ~options ~code))))
+	 `(run-task (task ~options ~code)))
+  
+  ([code k1 v1 & more]
+	 `(run-task (task {~k1 ~@(cons v1 more)} ~code))))
 
 
