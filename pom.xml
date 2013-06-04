@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>clj-time</groupId>
 			<artifactId>clj-time</artifactId>
-			<version>0.5.0</version>
+			<version>0.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.clojure</groupId>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>net.mikera</groupId>
 			<artifactId>clojure-utils</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
 		</dependency>
 	</dependencies>
 </project>
